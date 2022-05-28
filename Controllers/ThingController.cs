@@ -9,10 +9,24 @@ using Microsoft.Extensions.Logging;
 namespace bytescount.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ThingController : ControllerBase
     {
         private readonly ILogger<ThingController> _logger;
+
+        private static readonly string[] LocalThingsCache = new[]
+        {
+           "Thing 1", 
+           "Thing 2",
+           "Thing 3",
+           "Thing 4",
+           "Thing 5",
+           "Thing 6",
+           "Thing 7",
+           "Thing 8",
+           "Thing 9",
+           "Thing 10"
+        };
 
         public ThingController(ILogger<ThingController> logger)
         {
@@ -20,9 +34,16 @@ namespace bytescount.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get() 
+        public IEnumerable<string> Get()
         {
-            return  Ok();
+            return LocalThingsCache.AsEnumerable();
         }
+
+        [HttpGet("{id?}")]
+        public string Get(string id)
+        {
+            return LocalThingsCache.FirstOrDefault(s => s.EndsWith(id));
+        }
+
     }
 }
